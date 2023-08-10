@@ -9,8 +9,8 @@ export type TCms = React.FC<{
 export const Cms: TCms = ({ children: draft, id }) => {
   const store = useStore();
   useEffect(() => {
-    store.addKV({ k: id, v: draft });
-  }, []);
+    store.addDraft({ k: id, v: draft });
+  }, [draft, id, store.collectionMode]);
 
   return <div>{draft}</div>;
 };

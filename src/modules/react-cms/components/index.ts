@@ -1,1 +1,1 @@
-export * from "./Cms";
+export * from "./CmsText";

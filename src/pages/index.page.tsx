@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  Cms,
+  CmsText,
   useStore,
   TCollectionMode,
   TPublishMode,
@@ -67,8 +67,8 @@ const Page: React.FC = () => {
           <h3>Components</h3>
           <button onClick={() => setToggle(!toggle)}>toggle comp</button>
 
-          <Cms id="cms-comp-id">asd</Cms>
-          {toggle && <Cms id="cms-comp-id2">{text}</Cms>}
+          <CmsText id="cms-comp-id">asd</CmsText>
+          {toggle && <CmsText id="cms-comp-id2">{text}</CmsText>}
         </span>
       </div>
 

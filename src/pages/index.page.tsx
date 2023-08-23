@@ -25,9 +25,9 @@ const Page: React.FC = () => {
         <span style={style}>
           <H3>Components</H3>
           <br />
-          cms-comp-id-1: <CmsText id="cms-comp-id-1">asd</CmsText>
+          cms-comp-id-1: <CmsText id="cms-comp-id-1">cms-comp-id-1</CmsText>
           <br />
-          hello-nick: <CmsText id="hello-nick">asd</CmsText>
+          hello-nick: <CmsText id="hello-nick">hello-nick</CmsText>
           <br />
           <br />
           <button
@@ -35,10 +35,11 @@ const Page: React.FC = () => {
           >
             toggle comp
           </button>
+          <br />
           {showTogglableComponent && (
             <>
-              cms-comp-id2:
-              <CmsText id="cms-comp-id2">hi</CmsText>
+              cms-comp-id-2:
+              <CmsText id="cms-comp-id-2">cms-comp-id-2</CmsText>
             </>
           )}
           <br />

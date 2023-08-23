@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create, StoreApi, UseBoundStore } from "zustand";
 
 export type THintString<T extends string> = Exclude<string, T> | T;
 
@@ -15,8 +15,8 @@ type TStore = {
   isPopulated: boolean;
   publishedStrings: TStrings;
 
-  collectedDraftStrings: TStrings;
-  allDraftStrings: TStrings;
+  collectedRenderedStrings: TStrings;
+  allRenderedStrings: TStrings;
   getStrings: () => TStrings;
 
   prePublishBaseOption: TPrePublishBaseOption | "NONE";
@@ -42,84 +42,96 @@ type TStore = {
   forcePopulateStrings: () => void;
 };
 
-export const useStore = create<TStore>((set, get) => {
-  return {
-    isPopulated: false,
-    publishedStrings: {},
+type TCreateReactCmsStore = (p1: {
+  defaultValue?: string;
+}) => UseBoundStore<StoreApi<TStore>>;
+const createReactCmsStore: TCreateReactCmsStore = () => {
+  return create<TStore>((set, get) => {
+    return {
+      isPopulated: false,
+      publishedStrings: {},
 
-    collectedDraftStrings: {},
-    allDraftStrings: {},
-    getStrings: () => get().publishedStrings,
+      collectedRenderedStrings: {},
+      allRenderedStrings: {},
+      getStrings: () => get().publishedStrings,
 
-    prePublishBaseOption: "NONE",
-    prePublishAdditionsOption: "NONE",
-    setPrePublishBaseOption: (p) => set({ prePublishBaseOption: p }),
-    setPrePublishAdditionsOption: (p) => set({ prePublishAdditionsOption: p }),
-    getPrePublishBase: () => {
-      const storeType = get().prePublishBaseOption;
-      if (storeType === "PUBLISHED") return get().publishedStrings;
-      return {};
-    },
-    getPrePublishAdditions: () => {
-      const storeType = get().prePublishAdditionsOption;
-      if (storeType === "ALL_DRAFTS") return get().allDraftStrings;
-      if (storeType === "COLLECTED_DRAFTS") return get().collectedDraftStrings;
-      return {};
-    },
+      prePublishBaseOption: "NONE",
+      prePublishAdditionsOption: "NONE",
+      setPrePublishBaseOption: (p) => set({ prePublishBaseOption: p }),
+      setPrePublishAdditionsOption: (p) =>
+        set({ prePublishAdditionsOption: p }),
+      getPrePublishBase: () => {
+        const storeType = get().prePublishBaseOption;
+        if (storeType === "PUBLISHED") return get().publishedStrings;
+        return {};
+      },
+      getPrePublishAdditions: () => {
+        const storeType = get().prePublishAdditionsOption;
+        if (storeType === "ALL_DRAFTS") return get().allRenderedStrings;
+        if (storeType === "COLLECTED_DRAFTS")
+          return get().collectedRenderedStrings;
+        return {};
+      },
 
-    getPublishableString: () => {
-      return {
-        ...get().getPrePublishBase(),
-        ...get().getPrePublishAdditions(),
-      };
-    },
+      getPublishableString: () => {
+        return {
+          ...get().getPrePublishBase(),
+          ...get().getPrePublishAdditions(),
+        };
+      },
 
-    defaultFallbackString: "",
-    setDefaultFallbackString: (k) => set(() => ({ defaultFallbackString: k })),
+      defaultFallbackString: "",
+      setDefaultFallbackString: (k) =>
+        set(() => ({ defaultFallbackString: k })),
 
-    collectionMode: "NONE",
-    setCollectionMode: (collectionMode) => set(() => ({ collectionMode })),
-    publishMode: "MERGE_COLLECTED",
-    setPublishMode: (publishMode) => set(() => ({ publishMode })),
+      collectionMode: "NONE",
+      setCollectionMode: (collectionMode) => set(() => ({ collectionMode })),
+      publishMode: "MERGE_COLLECTED",
+      setPublishMode: (publishMode) => set(() => ({ publishMode })),
 
-    forceAddDraft: (p) => {
-      set((state) => {
-        const drafts = { ...state.collectedDraftStrings, [p.k]: p.v };
-        return { collectedDraftStrings: drafts };
-      });
-    },
-    addDraft: (p) => {
-      set((state) => {
-        const drafts = { ...state.allDraftStrings, [p.k]: p.v };
-        return { allDraftStrings: drafts };
-      });
-      const got = get();
-      if (got.collectionMode === "NONE") return;
-      if (got.collectionMode === "COLLECT_ALL") return got.forceAddDraft(p);
-      if (got.collectionMode === "COLLECT_NEW") {
-        const isNewKey = !Object.keys(got.collectedDraftStrings).includes(p.k);
-        if (isNewKey) return got.forceAddDraft(p);
-      }
-    },
+      forceAddDraft: (p) => {
+        set((state) => {
+          const drafts = { ...state.collectedRenderedStrings, [p.k]: p.v };
+          return { collectedRenderedStrings: drafts };
+        });
+      },
+      addDraft: (p) => {
+        set((state) => {
+          const drafts = { ...state.allRenderedStrings, [p.k]: p.v };
+          return { allRenderedStrings: drafts };
+        });
+        const got = get();
+        if (got.collectionMode === "NONE") return;
+        if (got.collectionMode === "COLLECT_ALL") return got.forceAddDraft(p);
+        if (got.collectionMode === "COLLECT_NEW") {
+          const isNewKey = !Object.keys(got.collectedRenderedStrings).includes(
+            p.k
+          );
+          if (isNewKey) return got.forceAddDraft(p);
+        }
+      },
 
-    populatePublishedStrings: async () => {
-      const got = get();
-      got.forcePopulateStrings();
-    },
-    forcePopulateStrings: async () => {
-      const response = await fetch("/api/cms", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(get().collectedDraftStrings),
-      });
-      const result = await response.json();
-      set({
-        isPopulated: true,
-        publishedStrings: result,
-        collectedDraftStrings: { ...get().collectedDraftStrings },
-      });
-    },
-  };
-});
+      populatePublishedStrings: async () => {
+        console.log(/*LL*/ 106, {});
+        const got = get();
+        got.forcePopulateStrings();
+      },
+      forcePopulateStrings: async () => {
+        const response = await fetch("/api/cms", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(get().collectedRenderedStrings),
+        });
+        const result = await response.json();
+        set({
+          isPopulated: true,
+          publishedStrings: result,
+        });
+      },
+    };
+  });
+};
+
+export const useStore = createReactCmsStore();

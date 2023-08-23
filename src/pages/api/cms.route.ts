@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 const route = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(req.body);
+  console.log("request made... body:", req.body);
   try {
     const result = {
       "fetched-string": "true",

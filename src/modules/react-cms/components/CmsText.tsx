@@ -25,6 +25,7 @@ export const CmsText: TCmsText = ({ children: draft, id }) => {
         border: `1px solid ${isHover ? "blue" : "white"}`,
         margin: "2px",
         cursor: "pointer",
+        display: "inline-block",
       }}
     >
       {editMode ? (

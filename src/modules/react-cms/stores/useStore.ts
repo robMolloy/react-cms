@@ -7,7 +7,8 @@ export type TPublishMode =
   | "SET_COLLECTED"
   | "MERGE_COLLECTED"
   | "REMOVE_COLLECTED";
-export type TStoreType = "COLLECTED_DRAFTS" | "ALL_DRAFTS" | "PUBLISHED";
+export type TPrePublishBaseOption = "PUBLISHED";
+export type TPrePublishAdditionOption = "COLLECTED_DRAFTS" | "ALL_DRAFTS";
 export type TStrings = { [k: string]: string };
 
 type TStore = {
@@ -18,15 +19,12 @@ type TStore = {
   allDraftStrings: TStrings;
   getStrings: () => TStrings;
 
-  storeType1: TStoreType | "NONE";
-  storeType2: TStoreType | "NONE";
-  storeType3: TStoreType | "NONE";
-  setStoreType1: (p: TStoreType | "NONE") => void;
-  setStoreType2: (p: TStoreType | "NONE") => void;
-  setStoreType3: (p: TStoreType | "NONE") => void;
-  getStoreType1: () => TStrings;
-  getStoreType2: () => TStrings;
-  getStoreType3: () => TStrings;
+  prePublishBaseOption: TPrePublishBaseOption | "NONE";
+  prePublishAdditionsOption: TPrePublishAdditionOption | "NONE";
+  setPrePublishBaseOption: (p: TPrePublishBaseOption | "NONE") => void;
+  setPrePublishAdditionsOption: (p: TPrePublishAdditionOption | "NONE") => void;
+  getPrePublishBase: () => TStrings;
+  getPrePublishAdditions: () => TStrings;
   getPublishableString: () => TStrings;
 
   defaultFallbackString: string;
@@ -53,39 +51,26 @@ export const useStore = create<TStore>((set, get) => {
     allDraftStrings: {},
     getStrings: () => get().publishedStrings,
 
-    storeType1: "NONE",
-    storeType2: "NONE",
-    storeType3: "NONE",
-    setStoreType1: (p) => set({ storeType1: p }),
-    setStoreType2: (p) => set({ storeType2: p }),
-    setStoreType3: (p) => set({ storeType3: p }),
-    getStoreType1: () => {
-      const storeType = get().storeType1;
-      if (storeType === "ALL_DRAFTS") return get().allDraftStrings;
-      if (storeType === "COLLECTED_DRAFTS") return get().collectedDraftStrings;
+    prePublishBaseOption: "NONE",
+    prePublishAdditionsOption: "NONE",
+    setPrePublishBaseOption: (p) => set({ prePublishBaseOption: p }),
+    setPrePublishAdditionsOption: (p) => set({ prePublishAdditionsOption: p }),
+    getPrePublishBase: () => {
+      const storeType = get().prePublishBaseOption;
       if (storeType === "PUBLISHED") return get().publishedStrings;
       return {};
     },
-    getStoreType2: () => {
-      const storeType = get().storeType2;
+    getPrePublishAdditions: () => {
+      const storeType = get().prePublishAdditionsOption;
       if (storeType === "ALL_DRAFTS") return get().allDraftStrings;
       if (storeType === "COLLECTED_DRAFTS") return get().collectedDraftStrings;
-      if (storeType === "PUBLISHED") return get().publishedStrings;
-      return {};
-    },
-    getStoreType3: () => {
-      const storeType = get().storeType3;
-      if (storeType === "ALL_DRAFTS") return get().allDraftStrings;
-      if (storeType === "COLLECTED_DRAFTS") return get().collectedDraftStrings;
-      if (storeType === "PUBLISHED") return get().publishedStrings;
       return {};
     },
 
     getPublishableString: () => {
       return {
-        ...get().getStoreType1(),
-        ...get().getStoreType2(),
-        ...get().getStoreType3(),
+        ...get().getPrePublishBase(),
+        ...get().getPrePublishAdditions(),
       };
     },
 

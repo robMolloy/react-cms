@@ -4,16 +4,18 @@ import {
   useStore,
   TCollectionMode,
   TPublishMode,
-  TStoreType,
+  TPrePublishAdditionOption,
+  TPrePublishBaseOption,
 } from "@/modules/react-cms";
+import { MenuItem, Select } from "@mui/material";
 
 const style = { border: "1px solid blue", marginRight: "10px", flex: 1 };
 
 const Page: React.FC = () => {
   const store = useStore();
 
-  const [toggle, setToggle] = useState(false);
-  const [text, setText] = useState("asd");
+  const [showTogglableComponent, setShowTogglableComponent] = useState(false);
+  const [togglableComponentText, setTogglableComponentText] = useState("asd");
 
   return (
     <main className="flex min-h-screen p-24">
@@ -40,17 +42,6 @@ const Page: React.FC = () => {
           <option value="REMOVE_COLLECTED">REMOVE_COLLECTED</option>
         </select>
         <br />
-        <select
-          onChange={(e) =>
-            store.setCollectionMode(e.target.value as TCollectionMode)
-          }
-          defaultValue={store.collectionMode}
-        >
-          <option value="READ_ONLY">READ_ONLY</option>
-          <option value="WRITE_NEW_DRAFTS">WRITE_NEW_DRAFTS</option>
-          <option value="OVERWRITE_DRAFTS">OVERWRITE_DRAFTS</option>
-        </select>
-        <br />
         <button onClick={() => store.populatePublishedStrings()}>
           populatePublishedStrings
         </button>
@@ -58,69 +49,65 @@ const Page: React.FC = () => {
         <input
           placeholder="text"
           type="text"
-          defaultValue={text}
-          onChange={(e) => setText(e.target.value)}
+          defaultValue={togglableComponentText}
+          onChange={(e) => setTogglableComponentText(e.target.value)}
         />
       </div>
       <div style={{ marginTop: "20px", display: "flex" }}>
         <span style={style}>
           <h3>Components</h3>
-          <button onClick={() => setToggle(!toggle)}>toggle comp</button>
+          <button
+            onClick={() => setShowTogglableComponent(!showTogglableComponent)}
+          >
+            toggle comp
+          </button>
 
           <CmsText id="cms-comp-id">asd</CmsText>
-          {toggle && <CmsText id="cms-comp-id2">{text}</CmsText>}
+          {showTogglableComponent && (
+            <CmsText id="cms-comp-id2">{togglableComponentText}</CmsText>
+          )}
         </span>
       </div>
 
       <div style={{ marginTop: "20px", display: "flex" }}>
         <span style={style}>
-          <h3>storeType1</h3>
-          <select
+          <h3>Pre Publish Base</h3>
+          <Select
             onChange={(e) =>
-              store.setStoreType1(e.target.value as TStoreType | "NONE")
+              store.setPrePublishBaseOption(
+                e.target.value as TPrePublishBaseOption
+              )
             }
-            value={store.storeType1}
+            value={store.prePublishBaseOption}
           >
-            <option value="NONE">NONE</option>
-            <option value="ALL_DRAFTS">ALL_DRAFTS</option>
-            <option value="COLLECTED_DRAFTS">COLLECTED_DRAFTS</option>
-            <option value="PUBLISHED">PUBLISHED</option>
-          </select>
-          <pre>{JSON.stringify(store.storeType1, undefined, 2)}</pre>
-          <pre>{JSON.stringify(store.getStoreType1(), undefined, 2)}</pre>
+            <MenuItem value="NONE">NONE</MenuItem>
+            <MenuItem value="PUBLISHED">PUBLISHED</MenuItem>
+          </Select>
+          <pre>{JSON.stringify(store.prePublishBaseOption, undefined, 2)}</pre>
+          <pre>{JSON.stringify(store.getPrePublishBase(), undefined, 2)}</pre>
         </span>
         <span style={style}>
-          <h3>storeType2</h3>
-          <select
+          <h3>Pre Publish Additions</h3>
+          <Select
             onChange={(e) =>
-              store.setStoreType2(e.target.value as TStoreType | "NONE")
+              store.setPrePublishAdditionsOption(
+                e.target.value as TPrePublishAdditionOption | "NONE"
+              )
             }
-            value={store.storeType2}
+            value={store.prePublishAdditionsOption}
           >
-            <option value="NONE">NONE</option>
-            <option value="ALL_DRAFTS">ALL_DRAFTS</option>
-            <option value="COLLECTED_DRAFTS">COLLECTED_DRAFTS</option>
-            <option value="PUBLISHED">PUBLISHED</option>
-          </select>
-          <pre>{JSON.stringify(store.storeType2, undefined, 2)}</pre>
-          <pre>{JSON.stringify(store.getStoreType2(), undefined, 2)}</pre>
+            <MenuItem value="NONE">NONE</MenuItem>
+            <MenuItem value="ALL_DRAFTS">ALL_DRAFTS</MenuItem>
+            <MenuItem value="COLLECTED_DRAFTS">COLLECTED_DRAFTS</MenuItem>
+          </Select>
+          <pre>
+            {JSON.stringify(store.prePublishAdditionsOption, undefined, 2)}
+          </pre>
+          <pre>
+            {JSON.stringify(store.getPrePublishAdditions(), undefined, 2)}
+          </pre>
         </span>
-        <span style={style}>
-          <h3>storeType3</h3>
-          <select
-            onChange={(e) =>
-              store.setStoreType3(e.target.value as TStoreType | "NONE")
-            }
-            value={store.storeType3}
-          >
-            <option value="NONE">NONE</option>
-            <option value="ALL_DRAFTS">ALL_DRAFTS</option>
-            <option value="COLLECTED_DRAFTS">COLLECTED_DRAFTS</option>
-            <option value="PUBLISHED">PUBLISHED</option>
-          </select>
-          <pre>{JSON.stringify(store.storeType3, undefined, 2)}</pre>
-          <pre>{JSON.stringify(store.getStoreType3(), undefined, 2)}</pre>
-        </span>
+
         <span style={style}>
           <h3>publishable</h3>
           <pre>

@@ -92,12 +92,8 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
         const hasKey = indexOfKey !== -1;
         const copyKeys = [...get().prePublishBaseRemovalKeys];
 
-        if (hasKey) {
-          copyKeys.splice(indexOfKey, 1);
-          return set(() => ({ prePublishBaseRemovalKeys: copyKeys }));
-        }
-
-        copyKeys.push(key);
+        if (hasKey) copyKeys.splice(indexOfKey, 1);
+        else copyKeys.push(key);
         return set(() => ({ prePublishBaseRemovalKeys: copyKeys }));
       },
       togglePrePublishAdditionsRemovalKey: (key: string) => {
@@ -105,12 +101,8 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
         const hasKey = indexOfKey !== -1;
         const copyKeys = [...get().prePublishAdditionsRemovalKeys];
 
-        if (hasKey) {
-          copyKeys.splice(indexOfKey, 1);
-          return set(() => ({ prePublishAdditionsRemovalKeys: copyKeys }));
-        }
-
-        copyKeys.push(key);
+        if (hasKey) copyKeys.splice(indexOfKey, 1);
+        else copyKeys.push(key);
         return set(() => ({ prePublishAdditionsRemovalKeys: copyKeys }));
       },
 

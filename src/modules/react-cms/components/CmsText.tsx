@@ -14,7 +14,7 @@ export const CmsText: TCmsText = ({ children: draft, id }) => {
 
   useEffect(() => {
     store.addDraft({ k: id, v: draft });
-  }, [draft, id, store.collectionMode]);
+  }, [currentText]);
 
   return (
     <div

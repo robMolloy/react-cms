@@ -3,10 +3,7 @@ import { create, StoreApi, UseBoundStore } from "zustand";
 export type THintString<T extends string> = Exclude<string, T> | T;
 
 export type TCollectionMode = "ON" | "OFF";
-export type TPublishMode =
-  | "SET_COLLECTED"
-  | "MERGE_COLLECTED"
-  | "REMOVE_COLLECTED";
+export type TPublishMode = "MERGE_ADDITIONS" | "REMOVE_ADDITIONS";
 export type TPrePublishBaseOption = "PUBLISHED";
 export type TPrePublishAdditionOption =
   | "COLLECTED_RENDERED_DRAFTS"
@@ -89,7 +86,7 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
 
       collectionMode: "OFF",
       setCollectionMode: (collectionMode) => set(() => ({ collectionMode })),
-      publishMode: "MERGE_COLLECTED",
+      publishMode: "MERGE_ADDITIONS",
       setPublishMode: (publishMode) => set(() => ({ publishMode })),
 
       forceAddDraft: (p) => {
@@ -116,10 +113,9 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(get().collectedRenderedStrings),
         });
-        const result = await response.json();
         set({
           isPopulated: true,
-          publishedStrings: result,
+          publishedStrings: await response.json(),
         });
       },
     };

@@ -69,9 +69,8 @@ const Page: React.FC = () => {
             }
             defaultValue={store.collectionMode}
           >
-            <option value="READ_ONLY">READ_ONLY</option>
-            <option value="WRITE_NEW_DRAFTS">WRITE_NEW_DRAFTS</option>
-            <option value="OVERWRITE_DRAFTS">OVERWRITE_DRAFTS</option>
+            <option value="ON">ON</option>
+            <option value="OFF">OFF</option>
           </select>
           <br />
           <br />
@@ -83,11 +82,9 @@ const Page: React.FC = () => {
             }
             defaultValue={store.publishMode}
           >
-            <option value="SET_COLLECTED">SET_COLLECTED</option>
-            <option value="MERGE_COLLECTED">MERGE_COLLECTED</option>
-            <option value="REMOVE_COLLECTED">REMOVE_COLLECTED</option>
+            <option value="MERGE_ADDITIONS">MERGE_ADDITIONS</option>
+            <option value="REMOVE_ADDITIONS">REMOVE_ADDITIONS</option>
           </select>
-          <br />
           <br />
           <br />
         </span>
@@ -118,8 +115,10 @@ const Page: React.FC = () => {
             value={store.prePublishAdditionsOption}
           >
             <MenuItem value="NONE">NONE</MenuItem>
-            <MenuItem value="ALL_DRAFTS">ALL_DRAFTS</MenuItem>
-            <MenuItem value="COLLECTED_DRAFTS">COLLECTED_DRAFTS</MenuItem>
+            <MenuItem value="ALL_RENDERED_DRAFTS">ALL_RENDERED_DRAFTS</MenuItem>
+            <MenuItem value="COLLECTED_RENDERED_DRAFTS">
+              COLLECTED_RENDERED_DRAFTS
+            </MenuItem>
           </Select>
           <pre>
             {JSON.stringify(store.prePublishAdditionsOption, undefined, 2)}

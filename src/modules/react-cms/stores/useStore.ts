@@ -108,8 +108,7 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
 
       populatePublishedStrings: async () => {
         console.log(/*LL*/ 106, {});
-        const got = get();
-        got.forcePopulateStrings();
+        get().forcePopulateStrings();
       },
       forcePopulateStrings: async () => {
         const response = await fetch("/api/cms", {

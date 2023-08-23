@@ -87,6 +87,27 @@ const Page: React.FC = () => {
           <pre>{JSON.stringify(store.getPrePublishBase(), undefined, 2)}</pre>
         </span>
         <span style={style}>
+          <H3>Pre Publish Base (removal keys)</H3>
+          <button
+            onClick={() => {
+              store.togglePrePublishBaseRemovalKey("hello-nick");
+            }}
+          >
+            add hello to removal keys
+          </button>
+          <pre>
+            {JSON.stringify(store.prePublishBaseRemovalKeys, undefined, 2)}
+          </pre>
+        </span>
+        <span style={style}>
+          <H3>Pre Publish Base (combined)</H3>
+          <pre>
+            {JSON.stringify(store.getCombinedPrePublishBase(), undefined, 2)}
+          </pre>
+        </span>
+      </div>
+      <div style={{ marginTop: "20px", display: "flex" }}>
+        <span style={style}>
           <H3>Pre Publish Additions</H3>
           <Select
             onChange={(e) =>
@@ -107,6 +128,29 @@ const Page: React.FC = () => {
           </pre>
           <pre>
             {JSON.stringify(store.getPrePublishAdditions(), undefined, 2)}
+          </pre>
+        </span>
+        <span style={style}>
+          <H3>Pre Publish Additions (removal keys)</H3>
+          <button
+            onClick={() => {
+              store.togglePrePublishAdditionsRemovalKey("hello");
+            }}
+          >
+            add hello to removal keys
+          </button>
+          <pre>
+            {JSON.stringify(store.prePublishAdditionsRemovalKeys, undefined, 2)}
+          </pre>
+        </span>
+        <span style={style}>
+          <H3>Pre Publish Additions (combined)</H3>
+          <pre>
+            {JSON.stringify(
+              store.getCombinedPrePublishAdditions(),
+              undefined,
+              2
+            )}
           </pre>
         </span>
       </div>

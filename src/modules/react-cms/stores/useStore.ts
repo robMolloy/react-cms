@@ -25,6 +25,14 @@ type TStore = {
   getPrePublishAdditions: () => TStrings;
   getPublishableString: () => TStrings;
 
+  prePublishBaseRemovalKeys: string[];
+  prePublishAdditionsRemovalKeys: string[];
+  togglePrePublishBaseRemovalKey: (key: string) => void;
+  togglePrePublishAdditionsRemovalKey: (key: string) => void;
+
+  getCombinedPrePublishBase: () => TStrings;
+  getCombinedPrePublishAdditions: () => TStrings;
+
   defaultFallbackString: string;
   setDefaultFallbackString: (k: string) => void;
 
@@ -75,6 +83,62 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
           ...get().getPrePublishBase(),
           ...get().getPrePublishAdditions(),
         };
+      },
+
+      prePublishBaseRemovalKeys: [],
+      prePublishAdditionsRemovalKeys: [],
+      togglePrePublishBaseRemovalKey: (key: string) => {
+        const indexOfKey = get().prePublishBaseRemovalKeys.indexOf(key);
+        const hasKey = indexOfKey !== -1;
+        const copyKeys = [...get().prePublishBaseRemovalKeys];
+
+        if (hasKey) {
+          copyKeys.splice(indexOfKey, 1);
+          return set(() => ({ prePublishBaseRemovalKeys: copyKeys }));
+        }
+
+        copyKeys.push(key);
+        return set(() => ({ prePublishBaseRemovalKeys: copyKeys }));
+      },
+      togglePrePublishAdditionsRemovalKey: (key: string) => {
+        const indexOfKey = get().prePublishAdditionsRemovalKeys.indexOf(key);
+        const hasKey = indexOfKey !== -1;
+        const copyKeys = [...get().prePublishAdditionsRemovalKeys];
+
+        if (hasKey) {
+          copyKeys.splice(indexOfKey, 1);
+          return set(() => ({ prePublishAdditionsRemovalKeys: copyKeys }));
+        }
+
+        copyKeys.push(key);
+        return set(() => ({ prePublishAdditionsRemovalKeys: copyKeys }));
+      },
+
+      getCombinedPrePublishBase: () => {
+        const got = get();
+        const removalKeys = got.prePublishBaseRemovalKeys;
+        const strings = got.getPrePublishBase();
+
+        const entries = Object.entries(strings);
+        const combinedEntries = entries.filter(
+          ([k]) => !removalKeys.includes(k)
+        );
+        const combined: TStrings = {};
+        combinedEntries.forEach(([k, v]) => (combined[k] = v));
+        return combined;
+      },
+      getCombinedPrePublishAdditions: () => {
+        const got = get();
+        const removalKeys = got.prePublishAdditionsRemovalKeys;
+        const strings = got.getPrePublishAdditions();
+
+        const entries = Object.entries(strings);
+        const combinedEntries = entries.filter(
+          ([k]) => !removalKeys.includes(k)
+        );
+        const combined: TStrings = {};
+        combinedEntries.forEach(([k, v]) => (combined[k] = v));
+        return combined;
       },
 
       defaultFallbackString: "",

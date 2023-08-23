@@ -61,6 +61,15 @@ const Page: React.FC = () => {
             <option value="OFF">OFF</option>
           </select>
         </span>
+
+        <span style={style}>
+          <H3>publishable</H3>
+          <pre>
+            {JSON.stringify(store.getPublishableString(), undefined, 2)}
+          </pre>
+        </span>
+      </div>
+      <div style={{ marginTop: "20px", display: "flex" }}>
         <span style={style}>
           <H3>Pre Publish Base</H3>
           <Select
@@ -98,13 +107,6 @@ const Page: React.FC = () => {
           </pre>
           <pre>
             {JSON.stringify(store.getPrePublishAdditions(), undefined, 2)}
-          </pre>
-        </span>
-
-        <span style={style}>
-          <H3>publishable</H3>
-          <pre>
-            {JSON.stringify(store.getPublishableString(), undefined, 2)}
           </pre>
         </span>
       </div>

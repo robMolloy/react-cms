@@ -3,7 +3,6 @@ import {
   CmsText,
   useStore,
   TCollectionMode,
-  TPublishMode,
   TPrePublishAdditionOption,
   TPrePublishBaseOption,
 } from "@/modules/react-cms";
@@ -19,7 +18,6 @@ const Page: React.FC = () => {
   const store = useStore();
 
   const [showTogglableComponent, setShowTogglableComponent] = useState(false);
-  const [togglableComponentText, setTogglableComponentText] = useState("asd");
 
   return (
     <main className="flex min-h-screen p-24">
@@ -37,20 +35,10 @@ const Page: React.FC = () => {
           >
             toggle comp
           </button>
-          <br />
-          <div>set toggleable component text</div>
-          <input
-            placeholder="text"
-            type="text"
-            defaultValue={togglableComponentText}
-            onChange={(e) => setTogglableComponentText(e.target.value)}
-          />
-          <br />
-          <br />
           {showTogglableComponent && (
             <>
               cms-comp-id2:
-              <CmsText id="cms-comp-id2">{togglableComponentText}</CmsText>
+              <CmsText id="cms-comp-id2">hi</CmsText>
             </>
           )}
           <br />
@@ -72,21 +60,6 @@ const Page: React.FC = () => {
             <option value="ON">ON</option>
             <option value="OFF">OFF</option>
           </select>
-          <br />
-          <br />
-          Publish mode:
-          <br />
-          <select
-            onChange={(e) =>
-              store.setPublishMode(e.target.value as TPublishMode)
-            }
-            defaultValue={store.publishMode}
-          >
-            <option value="MERGE_ADDITIONS">MERGE_ADDITIONS</option>
-            <option value="REMOVE_ADDITIONS">REMOVE_ADDITIONS</option>
-          </select>
-          <br />
-          <br />
         </span>
         <span style={style}>
           <H3>Pre Publish Base</H3>

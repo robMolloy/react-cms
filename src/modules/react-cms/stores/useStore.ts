@@ -3,7 +3,6 @@ import { create, StoreApi, UseBoundStore } from "zustand";
 export type THintString<T extends string> = Exclude<string, T> | T;
 
 export type TCollectionMode = "ON" | "OFF";
-export type TPublishMode = "MERGE_ADDITIONS" | "REMOVE_ADDITIONS";
 export type TPrePublishBaseOption = "PUBLISHED";
 export type TPrePublishAdditionOption =
   | "COLLECTED_RENDERED_DRAFTS"
@@ -31,8 +30,6 @@ type TStore = {
 
   setCollectionMode: (mode: TCollectionMode) => void;
   collectionMode: TCollectionMode;
-  setPublishMode: (mode: TPublishMode) => void;
-  publishMode: TPublishMode;
 
   forceAddDraft: (p: { k: string; v: string }) => void;
   addDraft: (p: { k: string; v: string }) => void;
@@ -87,7 +84,6 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
       collectionMode: "OFF",
       setCollectionMode: (collectionMode) => set(() => ({ collectionMode })),
       publishMode: "MERGE_ADDITIONS",
-      setPublishMode: (publishMode) => set(() => ({ publishMode })),
 
       forceAddDraft: (p) => {
         set((state) => {

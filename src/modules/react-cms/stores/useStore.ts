@@ -2,13 +2,15 @@ import { create, StoreApi, UseBoundStore } from "zustand";
 
 export type THintString<T extends string> = Exclude<string, T> | T;
 
-export type TCollectionMode = "NONE" | "COLLECT_ALL" | "COLLECT_NEW";
+export type TCollectionMode = "ON" | "OFF";
 export type TPublishMode =
   | "SET_COLLECTED"
   | "MERGE_COLLECTED"
   | "REMOVE_COLLECTED";
 export type TPrePublishBaseOption = "PUBLISHED";
-export type TPrePublishAdditionOption = "COLLECTED_DRAFTS" | "ALL_DRAFTS";
+export type TPrePublishAdditionOption =
+  | "COLLECTED_RENDERED_DRAFTS"
+  | "ALL_RENDERED_DRAFTS";
 export type TStrings = { [k: string]: string };
 
 type TStore = {
@@ -66,9 +68,10 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
         return {};
       },
       getPrePublishAdditions: () => {
-        const storeType = get().prePublishAdditionsOption;
-        if (storeType === "ALL_DRAFTS") return get().allRenderedStrings;
-        if (storeType === "COLLECTED_DRAFTS")
+        const additionsOption = get().prePublishAdditionsOption;
+        if (additionsOption === "ALL_RENDERED_DRAFTS")
+          return get().allRenderedStrings;
+        if (additionsOption === "COLLECTED_RENDERED_DRAFTS")
           return get().collectedRenderedStrings;
         return {};
       },
@@ -84,7 +87,7 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
       setDefaultFallbackString: (k) =>
         set(() => ({ defaultFallbackString: k })),
 
-      collectionMode: "NONE",
+      collectionMode: "OFF",
       setCollectionMode: (collectionMode) => set(() => ({ collectionMode })),
       publishMode: "MERGE_COLLECTED",
       setPublishMode: (publishMode) => set(() => ({ publishMode })),
@@ -96,19 +99,13 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
         });
       },
       addDraft: (p) => {
-        set((state) => {
-          const drafts = { ...state.allRenderedStrings, [p.k]: p.v };
-          return { allRenderedStrings: drafts };
-        });
+        set((state) => ({
+          allRenderedStrings: { ...state.allRenderedStrings, [p.k]: p.v },
+        }));
+
         const got = get();
-        if (got.collectionMode === "NONE") return;
-        if (got.collectionMode === "COLLECT_ALL") return got.forceAddDraft(p);
-        if (got.collectionMode === "COLLECT_NEW") {
-          const isNewKey = !Object.keys(got.collectedRenderedStrings).includes(
-            p.k
-          );
-          if (isNewKey) return got.forceAddDraft(p);
-        }
+        if (got.collectionMode === "OFF") return;
+        if (got.collectionMode === "ON") return got.forceAddDraft(p);
       },
 
       populatePublishedStrings: async () => {

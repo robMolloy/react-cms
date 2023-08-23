@@ -59,42 +59,37 @@ const Page: React.FC = () => {
 
       <div style={{ marginTop: "20px", display: "flex" }}>
         <span style={style}>
-          <div>
-            <button onClick={() => store.populatePublishedStrings()}>
-              populatePublishedStrings
-            </button>
-            <br />
-            <br />
-            Collection mode:
-            <br />
-            <select
-              onChange={(e) =>
-                store.setCollectionMode(e.target.value as TCollectionMode)
-              }
-              defaultValue={store.collectionMode}
-            >
-              <option value="READ_ONLY">READ_ONLY</option>
-              <option value="WRITE_NEW_DRAFTS">WRITE_NEW_DRAFTS</option>
-              <option value="OVERWRITE_DRAFTS">OVERWRITE_DRAFTS</option>
-            </select>
-            <br />
-            <br />
-            Publish mode:
-            <br />
-            <select
-              onChange={(e) =>
-                store.setPublishMode(e.target.value as TPublishMode)
-              }
-              defaultValue={store.publishMode}
-            >
-              <option value="SET_COLLECTED">SET_COLLECTED</option>
-              <option value="MERGE_COLLECTED">MERGE_COLLECTED</option>
-              <option value="REMOVE_COLLECTED">REMOVE_COLLECTED</option>
-            </select>
-            <br />
-            <br />
-            <br />
-          </div>
+          <H3>Control Panel</H3>
+          <br />
+          Collection mode:
+          <br />
+          <select
+            onChange={(e) =>
+              store.setCollectionMode(e.target.value as TCollectionMode)
+            }
+            defaultValue={store.collectionMode}
+          >
+            <option value="READ_ONLY">READ_ONLY</option>
+            <option value="WRITE_NEW_DRAFTS">WRITE_NEW_DRAFTS</option>
+            <option value="OVERWRITE_DRAFTS">OVERWRITE_DRAFTS</option>
+          </select>
+          <br />
+          <br />
+          Publish mode:
+          <br />
+          <select
+            onChange={(e) =>
+              store.setPublishMode(e.target.value as TPublishMode)
+            }
+            defaultValue={store.publishMode}
+          >
+            <option value="SET_COLLECTED">SET_COLLECTED</option>
+            <option value="MERGE_COLLECTED">MERGE_COLLECTED</option>
+            <option value="REMOVE_COLLECTED">REMOVE_COLLECTED</option>
+          </select>
+          <br />
+          <br />
+          <br />
         </span>
         <span style={style}>
           <H3>Pre Publish Base</H3>

@@ -103,7 +103,7 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
           allRenderedStrings: { ...state.allRenderedStrings, [p.k]: p.v },
         }));
 
-        if (get();.collectionMode === "ON") return got.forceAddDraft(p);
+        if (get().collectionMode === "ON") return get().forceAddDraft(p);
       },
 
       populatePublishedStrings: async () => {

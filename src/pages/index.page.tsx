@@ -27,6 +27,7 @@ const Page: React.FC = () => {
         <span style={style}>
           <H3>Components</H3>
           <br />
+          <br />
           cms-comp-id-1: <CmsText id="cms-comp-id-1">asd</CmsText>
           <br />
           hello-nick: <CmsText id="hello-nick">asd</CmsText>

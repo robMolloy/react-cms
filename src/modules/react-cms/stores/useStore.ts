@@ -42,7 +42,7 @@ type TStore = {
   forcePopulateStrings: () => void;
 };
 
-type TCreateReactCmsStore = (p1: {
+type TCreateReactCmsStore = (p1?: {
   defaultValue?: string;
 }) => UseBoundStore<StoreApi<TStore>>;
 const createReactCmsStore: TCreateReactCmsStore = () => {

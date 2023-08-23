@@ -69,6 +69,7 @@ const Page: React.FC = () => {
           </pre>
         </span>
       </div>
+
       <div style={{ marginTop: "20px", display: "flex" }}>
         <span style={style}>
           <H3>Pre Publish Base</H3>
@@ -84,48 +85,23 @@ const Page: React.FC = () => {
             <MenuItem value="PUBLISHED">PUBLISHED</MenuItem>
           </Select>
           <pre>{JSON.stringify(store.prePublishBaseOption, undefined, 2)}</pre>
-          {Object.entries(store.getPrePublishBase()).map(([k, v]) => (
-            <div
-              key={k}
-              onClick={() => store.togglePrePublishBaseRemovalKey(k)}
-              style={
-                store.prePublishBaseRemovalKeys.includes(k)
-                  ? { background: "red" }
-                  : {}
-              }
-            >
-              {k}: &apos;{v}&apos;
-            </div>
-          ))}
-        </span>
-        <span style={style}>
-          <H3>Pre Publish Base</H3>
-          <Select
-            onChange={(e) =>
-              store.setPrePublishBaseOption(
-                e.target.value as TPrePublishBaseOption
-              )
-            }
-            value={store.prePublishBaseOption}
-          >
-            <MenuItem value="NONE">NONE</MenuItem>
-            <MenuItem value="PUBLISHED">PUBLISHED</MenuItem>
-          </Select>
-          <pre>{JSON.stringify(store.prePublishBaseOption, undefined, 2)}</pre>
-          <pre>{JSON.stringify(store.getPrePublishBase(), undefined, 2)}</pre>
-        </span>
-        <span style={style}>
-          <H3>Pre Publish Base (removal keys)</H3>
-          <button
-            onClick={() => {
-              store.togglePrePublishBaseRemovalKey("hello-nick");
-            }}
-          >
-            toggle hello-nick from removal keys
-          </button>
-          <pre>
-            {JSON.stringify(store.prePublishBaseRemovalKeys, undefined, 2)}
-          </pre>
+          {"{"}
+          <div style={{ padding: "0 15px" }}>
+            {Object.entries(store.getPrePublishBase()).map(([k, v]) => (
+              <div
+                key={k}
+                onClick={() => store.togglePrePublishBaseRemovalKey(k)}
+                style={(() => {
+                  const hasKey = store.prePublishBaseRemovalKeys.includes(k);
+                  const addProps = hasKey ? { background: "red" } : {};
+                  return { cursor: "pointer", ...addProps };
+                })()}
+              >
+                {k}: {JSON.stringify(v)}
+              </div>
+            ))}
+          </div>
+          {"}"}
         </span>
         <span style={style}>
           <H3>Pre Publish Base (combined)</H3>
@@ -133,8 +109,6 @@ const Page: React.FC = () => {
             {JSON.stringify(store.getCombinedPrePublishBase(), undefined, 2)}
           </pre>
         </span>
-      </div>
-      <div style={{ marginTop: "20px", display: "flex" }}>
         <span style={style}>
           <H3>Pre Publish Additions</H3>
           <Select
@@ -154,22 +128,24 @@ const Page: React.FC = () => {
           <pre>
             {JSON.stringify(store.prePublishAdditionsOption, undefined, 2)}
           </pre>
-          <pre>
-            {JSON.stringify(store.getPrePublishAdditions(), undefined, 2)}
-          </pre>
-        </span>
-        <span style={style}>
-          <H3>Pre Publish Additions (removal keys)</H3>
-          <button
-            onClick={() => {
-              store.togglePrePublishAdditionsRemovalKey("cms-comp-id-1");
-            }}
-          >
-            toggle cms-comp-id-1 from removal keys
-          </button>
-          <pre>
-            {JSON.stringify(store.prePublishAdditionsRemovalKeys, undefined, 2)}
-          </pre>
+          {"{"}
+          <div style={{ padding: "0 15px" }}>
+            {Object.entries(store.getPrePublishAdditions()).map(([k, v]) => (
+              <div
+                key={k}
+                onClick={() => store.togglePrePublishAdditionsRemovalKey(k)}
+                style={(() => {
+                  const hasKey =
+                    store.prePublishAdditionsRemovalKeys.includes(k);
+                  const addProps = hasKey ? { background: "red" } : {};
+                  return { cursor: "pointer", ...addProps };
+                })()}
+              >
+                {k}: {JSON.stringify(v)}
+              </div>
+            ))}
+          </div>
+          {"}"}
         </span>
         <span style={style}>
           <H3>Pre Publish Additions (combined)</H3>
@@ -182,6 +158,7 @@ const Page: React.FC = () => {
           </pre>
         </span>
       </div>
+
       <div style={{ marginTop: "20px", display: "flex" }}>
         <span style={style}>
           <H3>full store</H3>

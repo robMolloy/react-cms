@@ -80,8 +80,8 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
 
       getPublishableString: () => {
         return {
-          ...get().getPrePublishBase(),
-          ...get().getPrePublishAdditions(),
+          ...get().getCombinedPrePublishBase(),
+          ...get().getCombinedPrePublishAdditions(),
         };
       },
 

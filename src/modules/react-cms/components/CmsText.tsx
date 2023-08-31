@@ -35,7 +35,6 @@ export const CmsText: TCmsText = ({ children: draft, id }) => {
     <div
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
-      onClick={() => setEditMode(!editMode)}
       style={{
         border: `1px solid ${isHover ? "blue" : "white"}`,
         margin: "2px",
@@ -44,14 +43,27 @@ export const CmsText: TCmsText = ({ children: draft, id }) => {
       }}
     >
       {editMode && (
-        <input
-          placeholder={id}
-          value={currentText}
-          onChange={(e) => setCurrentText(e.target.value)}
-        />
+        <>
+          <div style={{ position: "relative", padding: "3px" }}>
+            <div
+              style={{ position: "absolute", right: 0, top: 0 }}
+              onClick={() => setEditMode(!editMode)}
+            >
+              <span>Y</span>
+              <span onClick={() => {}}>N</span>
+            </div>
+            <input
+              placeholder={id}
+              value={currentText}
+              onChange={(e) => setCurrentText(e.target.value)}
+            />
+          </div>
+        </>
       )}
 
-      {!editMode && <div>{currentText}</div>}
+      {!editMode && (
+        <div onClick={() => setEditMode(!editMode)}>{currentText}</div>
+      )}
     </div>
   );
 };

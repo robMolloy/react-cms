@@ -19,6 +19,3 @@ export const createPocketBaseDb = () => {
   db = new PB(dbHref);
   return db;
 };
-
-const db1 = createPocketBaseDb();
-db1.collection("strings").getList();

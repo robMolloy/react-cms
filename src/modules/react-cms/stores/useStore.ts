@@ -1,3 +1,4 @@
+import { createPocketBaseDb } from "@/modules/pocketbase";
 import { create, StoreApi, UseBoundStore } from "zustand";
 
 export type THintString<T extends string> = Exclude<string, T> | T;
@@ -156,18 +157,14 @@ const createReactCmsStore: TCreateReactCmsStore = () => {
       },
 
       populatePublishedStrings: async () => {
-        console.log(/*LL*/ 106, {});
         get().forcePopulateStrings();
       },
       forcePopulateStrings: async () => {
-        const response = await fetch("/api/cms", {
-          method: "post",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(get().collectedRenderedStrings),
-        });
+        const db1 = createPocketBaseDb();
+        const response = await db1.collection("strings").getFirstListItem("");
         set({
           isPopulated: true,
-          publishedStrings: await response.json(),
+          publishedStrings: await response.jsonStrings,
         });
       },
     };
